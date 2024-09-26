@@ -1,0 +1,7 @@
+Algoritmo sin_titulo
+	definir num1, num2, resultado como entero
+	leer num1
+	leer num2
+	resultado = num1+num2
+	escribir "las suma de num1 mas num2 es", resultado
+FinAlgoritmo
