@@ -1,0 +1,11 @@
+Algoritmo promediar
+	Definir num1, num2 Como Entero
+	definir promedio Como Real
+	Escribir "ingrese un numero"
+	Leer num1
+	Escribir "Ahora ingrese otro numero"
+	Leer num2
+	promedio = (num1 + num2) / 2
+	Escribir "El promedio es: ", promedio
+	
+FinAlgoritmo
