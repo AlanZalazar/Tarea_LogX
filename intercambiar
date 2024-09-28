@@ -1,0 +1,14 @@
+Algoritmo sin_titulo
+	definir var1, var2, varTemp Como Real
+	
+	var1 = 5.8
+	var2 = 42.7
+	Escribir "te muestro las variables antes de intercambiarlas... var1: ", var1, ", var2: ",var2
+	Escribir "ahora es el momento de la intercambiacion"
+	varTemp = var1
+	var1 = var2
+	var2 = varTemp
+	Escribir "te muestro las variables DESPUES de intercambiarlas... var1: ", var1, ", var2: ",var2
+	
+	
+FinAlgoritmo
