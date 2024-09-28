@@ -1,0 +1,14 @@
+Algoritmo sin_titulo
+	definir calificacion1, calificacion2, calificacion3 Como Entero
+	definir promedio Como Real
+	
+	Escribir "ingrese calificacion de la primer materia"
+	leer calificacion1
+	Escribir "ingrese calificacion de la segunda materia"
+	Leer calificacion2
+	Escribir "ingrese calificacion de la tercer materia"
+	leer calificacion3
+	
+	promedio = (calificacion1+calificacion2+calificacion3)/3
+	Escribir "El promedio de las calificaciones es: ", promedio
+FinAlgoritmo
