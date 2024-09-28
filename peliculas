@@ -1,0 +1,33 @@
+Algoritmo peliculas
+    Definir tipoPelicula Como Caracter
+    Definir horario Como Entero
+    Definir costo Como Real
+    costo <- 0
+	
+    Escribir "Ingrese el tipo de película (A, B o C): "
+    Leer tipoPelicula
+    Escribir "Ingrese el horario (1 para normal, 0 para reducido): "
+    Leer horario
+	
+    Si tipoPelicula = "A" Entonces
+        Si horario = 1 Entonces
+            costo = 1200
+        Sino
+            costo = 1000 
+        FinSi
+    Sino
+        Si tipoPelicula = "B" Entonces
+            Si horario = 1 Entonces
+                costo = 1500
+            Sino
+                costo = 1300 
+            FinSi
+        Sino
+            Si tipoPelicula = "C" Entonces
+                costo = 1800
+            FinSi
+        FinSi
+    FinSi
+	
+    Escribir "La película ", tipoPelicula, " tiene un costo de ", costo, " pesos."
+FinAlgoritmo
