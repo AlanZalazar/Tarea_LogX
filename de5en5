@@ -1,0 +1,10 @@
+Algoritmo de100a105
+	Definir numero como entero
+	numero = 100
+	
+	Mientras numero <= 150 Hacer
+		Escribir numero
+		numero = numero + 5
+	FinMientras
+	
+FinAlgoritmo
