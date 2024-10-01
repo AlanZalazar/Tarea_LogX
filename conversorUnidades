@@ -1,0 +1,45 @@
+Algoritmo conversorUnidades
+	Definir cantidad, resultado Como Real
+	Definir unidadOrigen, unidadDestino Como Caracter
+	Definir i Como Entero
+	
+	Para i = i Hasta 6 Hacer
+		Escribir "ingrese la cantidad a convertir: "
+		Leer cantidad
+		Escribir "Ingrese unidad de origen (m/km/g/kg/c/f): "
+		Leer unidadOrigen
+		Escribir "Ingrese unidad de destino (m/km/g/kg/c/f): "
+		Leer unidadDestino
+		
+		si unidadOrigen = "m" Y unidadDestino = "km" Entonces
+			resultado = cantidad / 1000 
+		SiNo
+			si unidadOrigen = "km" Y unidadDestino = "m" Entonces
+				resultado = cantidad * 1000
+			SiNo
+				si unidadOrigen = "g" Y unidadDestino = "kg" Entonces
+					resultado = cantidad / 1000
+				SiNo
+					si unidadOrigen = "kg" Y unidadDestino = "g" Entonces
+						resultado = cantidad * 1000
+					SiNo
+						si unidadOrigen = "c" Y unidadDestino = "f" Entonces
+							resultado = (cantindad * 9/5) +32
+						SiNo
+							si unidadOrigen = "f" Y unidadDestino = "c" Entonces
+								resultado = (cantidad -21) * 5/9
+							SiNo
+								Escribir "Error: conversion no valida."
+								resultado = 0
+							FinSi
+						FinSi
+					FinSi
+				FinSi
+			FinSi
+		FinSi
+		
+		Escribir "El resultado de la conversion es de: ", resultado
+		
+	FinPara
+	
+FinAlgoritmo
