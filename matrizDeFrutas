@@ -1,0 +1,55 @@
+Algoritmo matrizDeFrutas
+	Definir matriz, fruta, buscar Como caracter
+    Definir f, c Como Entero
+	Definir encontrada Como Logico
+	
+    Dimension matriz[4,4]
+	
+    Para f = 0 Hasta 3 Hacer
+        Para c = 0 Hasta 3 Hacer
+			Escribir "mandale fruta"
+			Leer matriz[f,c]
+           
+        FinPara
+    FinPara
+	
+    Escribir "Estas son todas las frutas que agregaste:"
+    Para f = 0 Hasta 3 Hacer
+        Para c = 0 Hasta 3 Hacer
+            Escribir Sin Saltar matriz[f,c], "  "
+        FinPara
+        Escribir ""
+    FinPara
+	Escribir ""
+	Escribir ""
+	Escribir ""
+	Escribir ""
+	buscar = "s"
+	Mientras buscar = "s" Hacer
+		encontrada = Falso
+		Escribir "¿Desea buscar alguna fruta en la matriz? (s/n)"
+		Leer buscar
+		
+		si buscar = "s" Entonces
+			Escribir "Nombre de la fruta a buscar..."
+			
+			Leer fruta
+			Para f =  0 Hasta 3 Hacer
+				Para c = 0 Hasta 3 Hacer
+					si matriz[f,c] = fruta Y encontrada = Falso Entonces
+						encontrada = Verdadero
+						Escribir "La fruta ~", fruta, "~ se encuentra en la fila ", f, " columna ", c
+					FinSi
+				FinPara
+			FinPara
+			
+			si encontrada = false Entonces
+				Escribir "La fruta ~", fruta, "~ no se encuentra en la matriz"
+			FinSi
+		SiNo
+			Escribir "Gracias, vuelvas prontos"
+		FinSi
+		
+	FinMientras
+	
+FinAlgoritmo
