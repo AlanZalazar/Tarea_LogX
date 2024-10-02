@@ -1,0 +1,37 @@
+Algoritmo diagonalSecundaria
+	Definir matriz Como Entero
+    Definir f, c Como Entero
+	
+    Dimension matriz[6,6]
+	
+    Para f = 0 Hasta 5 Hacer
+        Para c = 0 Hasta 5 Hacer
+            matriz[f,c] = 0
+        FinPara
+    FinPara
+	
+    Escribir "Esta es la vista de la matriz inicializada en ceros:"
+    Para i = 0 Hasta 5 Hacer
+        Para j = 0 Hasta 5 Hacer
+            Escribir Sin Saltar matriz[i,j], "  "
+        FinPara
+        Escribir ""
+    FinPara
+	
+	
+	Para f = 0 Hasta 5 Hacer
+		Para c = 5 Hasta 0 Hacer
+			si (f+c) = 5 Entonces
+				matriz[f,c] = 1
+			FinSi
+		FinPara
+	FinPara
+	
+	Escribir "Esta es la vista final con la diagonal secundaria en 1:"
+	Para i = 0 Hasta 5 Hacer
+        Para j = 0 Hasta 5 Hacer
+            Escribir Sin Saltar matriz[i,j], "  "
+        FinPara
+        Escribir ""
+    FinPara
+FinAlgoritmo
