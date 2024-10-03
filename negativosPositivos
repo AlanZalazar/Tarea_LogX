@@ -1,0 +1,24 @@
+Algoritmo positivosYNegativos
+	Definir positivos, negativos, posicion Como Entero
+	Dimension valores[6]
+	
+	positivos = 0
+	negativos = 0
+	posicion = 0
+	
+	Repetir 
+	
+	Escribir "intruduce un numero para la posicion ", posicion+1," del arreglo"
+	Leer valores[posicion]
+	si valores[posicion] > 0 Entonces
+		positivos = positivos+1
+	sino si valores[posicion] < 0 Entonces
+			negativos = negativos+1
+			FinSi
+	FinSi
+	posicion = posicion+1
+Hasta Que posicion = 6 
+
+Escribir "Hay ",positivos," numeros positivos y ",negativos," numeros negativos."
+	
+FinAlgoritmo
