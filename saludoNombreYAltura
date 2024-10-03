@@ -1,0 +1,13 @@
+Algoritmo saludoNombreYAltura
+	Definir nombre Como Caracter
+	Definir altura Como Real
+	
+	Escribir "introduce tu nombre"
+	Leer nombre
+	Escribir "introduce tu altura"
+	leer altura
+	
+	Escribir ""
+	Escribir "Hola ",nombre,". Tu altura es ",altura," metros."
+	
+FinAlgoritmo
