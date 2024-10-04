@@ -1,0 +1,47 @@
+Algoritmo costosLibreria
+	Definir costoTotal, costoNovela, costoTexto, costoRevista Como Real
+	Definir tipoDeLibro Como Entero
+	
+	costoNovela = 300
+	costoTexto = 500
+	costoRevista = 800
+	costoTotal = 0
+	
+	Escribir "Ingrese el numero del tipo de libro que quiere comprar:"
+	Escribir "[1]: Novelas."
+	Escribir "[2]: Libros de texto."
+	Escribir "[3]: Revistas."
+	Escribir "[4]: Novelas y libros de texto."
+	Escribir "[5]: Todos los tipos de libros."
+	Escribir "[6]: Novelas y revistas."
+	Escribir "[7]: Libors de texto y revistas."
+	
+	leer tipoDeLibro
+	
+	segun tipoDeLibro Hacer
+		caso 1:
+			costoTotal = costoNovela
+		caso 2:
+			costoTotal = costoTexto
+		caso 3:
+			costoTotal = costoRevista
+		caso 4:
+			costoTotal = costoNovela + costoTexto
+		caso 5:
+			costoTotal = costoNovela + costoTexto + costoRevista
+		caso 6:
+			costoTotal = costoNovela + costoRevista
+		caso 7:
+			costoTotal = costoTexto + costoRevista
+		De Otro Modo:
+			Escribir "Numero ingresado invalido."
+			costoTotal = 0
+	FinSegun
+	
+	si costoTotal > 0 Entonces
+		Escribir "El costo total de su compra es: ", costoTotal, " pesos"
+	FinSi
+	
+	
+	
+FinAlgoritmo
