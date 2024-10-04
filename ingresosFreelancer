@@ -1,0 +1,12 @@
+Algoritmo ingresosFreelancer
+	Definir tarifa Como Real
+	Definir horas, ingresos Como Entero
+	
+	Escribir "Porfavor, ingrese el monto de la tarifa por hora"
+	Leer tarifa
+	Escribir "Ahora ingrese la cantidad de horas trabajadas"
+	Leer horas
+	ingresos = tarifa*horas
+	Escribir "El ingreso mensual del freelancer es de ",ingresos
+	
+FinAlgoritmo
