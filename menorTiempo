@@ -1,0 +1,17 @@
+Algoritmo menorTiempo
+	Definir numParticipante, tiempo, mTiempo, ganador, i Como Entero
+	mTiempo = 99999999
+	Para i = 1 hasta 10 Hacer
+		Escribir "Ingrese el numero del participante ", i, ": "
+		Leer numParticipante
+		Escribir "ingrese el tiempo en minutos que tardó el participante ", numParticipante
+		leer tiempo
+		si tiempo < mTiempo Entonces
+			mTiempo = tiempo
+			ganador = numParticipante
+		FinSi
+	FinPara
+	Escribir "el participante con el menor tiempo es el numero: ", ganador
+	Escribir "Con un tiempo de: ", mTiempo, " minutos"
+	
+FinAlgoritmo
