@@ -1,0 +1,8 @@
+Algoritmo bucleUnoCinco
+	Definir i Como Entero
+	
+	para i = 0 Hasta 4 Hacer
+		Escribir i+1
+	FinPara
+	
+FinAlgoritmo
