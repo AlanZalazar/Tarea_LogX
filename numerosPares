@@ -1,0 +1,12 @@
+Algoritmo numerosPares
+    Definir limite, i Como Entero
+    
+    Escribir "Ingrese el número límite:"
+    Leer limite
+    
+    Para i = 1 Hasta limite Con Paso 1 Hacer
+        Si i % 2 = 0 Entonces
+            Escribir i
+        FinSi
+    FinPara
+FinAlgoritmo
