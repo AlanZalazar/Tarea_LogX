@@ -1,0 +1,482 @@
+1)Crear Base de datos:
+
+CREATE DATABASE ClinicaMedica;
+GO
+
+USE ClinicaMedica;
+GO
+
+
+2)Crear las tablas:
+
+CREATE TABLE Paciente (
+    DNI INT PRIMARY KEY,
+    Nombre VARCHAR(50),
+    Apellido VARCHAR(50),
+    Direccion VARCHAR(100),
+    FechaNacimiento DATE,
+    Telefono VARCHAR(20),
+    Email VARCHAR(50)
+);
+
+CREATE TABLE Medico (
+    DNI INT PRIMARY KEY,
+    Nombre VARCHAR(50),
+    Apellido VARCHAR(50),
+    Especialidad VARCHAR(50),
+    Telefono VARCHAR(20),
+    Email VARCHAR(50)
+);
+
+CREATE TABLE HistoriaClinica (
+    ID_Historia INT PRIMARY KEY IDENTITY(1,1),
+    Paciente_ID INT,
+    Fecha DATE,
+    Diagnostico TEXT,
+    Tratamiento TEXT,
+    Observaciones TEXT
+);
+
+CREATE TABLE Turno (
+    ID_Turno INT PRIMARY KEY IDENTITY(1,1),
+    Paciente_ID INT,
+    Medico_ID INT,
+    Fecha DATE,
+    Hora TIME,
+    Estado VARCHAR(20),
+    Motivo TEXT
+);
+
+CREATE TABLE Pagos (
+    ID_Pago INT PRIMARY KEY IDENTITY(1,1),
+    Paciente_ID INT,
+    Turno_ID INT,
+    Fecha DATE,
+    Hora TIME,
+    Estado VARCHAR(20),
+    Monto DECIMAL(10,2)
+);
+
+
+3)Relacionamos las tablas:
+
+-- Relaciones de claves foráneas (FK)
+ALTER TABLE HistoriaClinica  
+ADD CONSTRAINT FK_Historia_Paciente  
+FOREIGN KEY (Paciente_ID) REFERENCES Paciente(DNI);
+
+ALTER TABLE Turno  
+ADD CONSTRAINT FK_Turno_Paciente  
+FOREIGN KEY (Paciente_ID) REFERENCES Paciente(DNI);
+
+ALTER TABLE Turno  
+ADD CONSTRAINT FK_Turno_Medico  
+FOREIGN KEY (Medico_ID) REFERENCES Medico(DNI);
+
+ALTER TABLE Pagos  
+ADD CONSTRAINT FK_Pagos_Paciente  
+FOREIGN KEY (Paciente_ID) REFERENCES Paciente(DNI);
+
+ALTER TABLE Pagos  
+ADD CONSTRAINT FK_Pagos_Turno  
+FOREIGN KEY (Turno_ID) REFERENCES Turno(ID_Turno);
+
+
+4)Creamos los procedimientos:
+
+insertar nuevos pacientes:
+CREATE PROCEDURE InsertarPaciente  
+    @DNI INT,  
+    @Nombre VARCHAR(50),  
+    @Apellido VARCHAR(50),  
+    @Direccion VARCHAR(100),  
+    @FechaNacimiento DATE,  
+    @Telefono VARCHAR(20),  
+    @Email VARCHAR(50)  
+AS  
+BEGIN  
+    INSERT INTO Paciente (DNI, Nombre, Apellido, Direccion, FechaNacimiento, Telefono, Email)  
+    VALUES (@DNI, @Nombre, @Apellido, @Direccion, @FechaNacimiento, @Telefono, @Email);  
+END;
+
+ejemplo:
+EXEC InsertarPaciente  
+    @DNI = 12345678,  
+    @Nombre = 'Juan',  
+    @Apellido = 'Pérez',  
+    @Direccion = 'Calle Falsa 123',  
+    @FechaNacimiento = '1990-05-15',  
+    @Telefono = '1122334455',  
+    @Email = 'juan.perez@email.com';
+
+
+insertar nuevos medicos:
+CREATE PROCEDURE InsertarMedico  
+    @DNI INT,  
+    @Nombre VARCHAR(50),  
+    @Apellido VARCHAR(50),  
+    @Especialidad VARCHAR(50),  
+    @Telefono VARCHAR(20),  
+    @Email VARCHAR(50)  
+AS  
+BEGIN  
+    INSERT INTO Medico (DNI, Nombre, Apellido, Especialidad, Telefono, Email)  
+    VALUES (@DNI, @Nombre, @Apellido, @Especialidad, @Telefono, @Email);  
+END;
+
+ejemplo:
+EXEC InsertarMedico  
+    @DNI = 87654321,  
+    @Nombre = 'Ana',  
+    @Apellido = 'Gómez',  
+    @Especialidad = 'Cardiología',  
+    @Telefono = '1199887766',  
+    @Email = 'ana.gomez@email.com';
+
+
+insertar turno:
+CREATE PROCEDURE InsertarTurno  
+    @Paciente_ID INT,  
+    @Medico_ID INT,  
+    @Fecha DATE,  
+    @Hora TIME,  
+    @Estado VARCHAR(20),  
+    @Motivo VARCHAR(100)  
+AS  
+BEGIN  
+    INSERT INTO Turno (Paciente_ID, Medico_ID, Fecha, Hora, Estado, Motivo)  
+    VALUES (@Paciente_ID, @Medico_ID, @Fecha, @Hora, @Estado, @Motivo);  
+END;
+
+ejemplo:
+EXEC InsertarTurno  
+    @Paciente_ID = 12345678,  
+    @Medico_ID = 87654321,  
+    @Fecha = '2024-03-25',  
+    @Hora = '10:30',  
+    @Estado = 'Pendiente',  
+    @Motivo = 'Chequeo general';
+
+registrar historial:
+CREATE PROCEDURE RegistrarHistorial  
+    @Paciente_ID INT,  
+    @Fecha DATE,  
+    @Diagnostico VARCHAR(255),  
+    @Tratamiento VARCHAR(255),  
+    @Observaciones TEXT  
+AS  
+BEGIN  
+    INSERT INTO HistoriaClinica (Paciente_ID, Fecha, Diagnostico, Tratamiento, Observaciones)  
+    VALUES (@Paciente_ID, @Fecha, @Diagnostico, @Tratamiento, @Observaciones);  
+END;
+
+ejemplo:
+EXEC RegistrarHistorial  
+    @Paciente_ID = 12345678,  
+    @Fecha = '2024-03-25',  
+    @Diagnostico = 'Hipertensión detectada',  
+    @Tratamiento = 'Dieta baja en sodio y control periódico',  
+    @Observaciones = 'Paciente debe volver en 2 meses para control';
+
+consultar historial de paciente:
+CREATE PROCEDURE ConsultarHistorialPaciente  
+    @Paciente_ID INT  
+AS  
+BEGIN  
+    SELECT * FROM HistoriaClinica  
+    WHERE Paciente_ID = @Paciente_ID  
+    ORDER BY Fecha DESC;  
+END;
+
+ejemplo:
+EXEC ConsultarHistorialPaciente @Paciente_ID = 12345678;
+
+
+registrar un pago:
+CREATE PROCEDURE RegistrarPago    
+    @Paciente_ID INT,  
+    @Turno_ID INT,  
+    @Fecha DATE,  
+    @Monto DECIMAL(10,2)  
+AS  
+BEGIN  
+    INSERT INTO Pagos (Paciente_ID, Turno_ID, Fecha, Monto)  
+    VALUES (@Paciente_ID, @Turno_ID, @Fecha, @Monto);  
+END;
+
+ejemplo:
+EXEC RegistrarPago    
+    @Paciente_ID = 12345678,  
+    @Turno_ID = 1,  
+    @Fecha = '2024-03-25',  
+    @Monto = 5000.00;
+
+
+actualizar datos de paciente:
+CREATE PROCEDURE ActualizarPaciente  
+    @DNI INT,  
+    @Nombre VARCHAR(50),  
+    @Apellido VARCHAR(50),  
+    @Direccion VARCHAR(100),  
+    @FechaNacimiento DATE,  
+    @Telefono VARCHAR(20),  
+    @Email VARCHAR(50)  
+AS  
+BEGIN  
+    UPDATE Paciente  
+    SET Nombre = @Nombre,  
+        Apellido = @Apellido,  
+        Direccion = @Direccion,  
+        FechaNcimiento = @FechaNacimiento,  
+        Telefono = @Telefono,  
+        Email = @Email  
+    WHERE DNI = @DNI;  
+END;
+
+ejemplo:
+EXEC ActualizarPaciente  
+    @DNI = 12345678,  
+    @Nombre = 'Juan Carlos',  
+    @Apellido = 'Pérez',  
+    @Direccion = 'Av. Siempreviva 742',  
+    @FechaNacimiento = '1990-05-15',  
+    @Telefono = '1133445566',  
+    @Email = 'juan.carlos@email.com';
+
+
+actualizar datos de medico:
+CREATE PROCEDURE ActualizarMedico  
+    @DNI INT,  
+    @Nombre VARCHAR(50),  
+    @Apellido VARCHAR(50),  
+    @Especialidad VARCHAR(50),  
+    @Telefono VARCHAR(20),  
+    @Email VARCHAR(50)  
+AS  
+BEGIN  
+    UPDATE Medico  
+    SET Nombre = @Nombre,  
+        Apellido = @Apellido,  
+        Especialidad = @Especialidad,  
+        Telefono = @Telefono,  
+        Email = @Email  
+    WHERE DNI = @DNI;  
+END;
+
+ejemplo:
+EXEC ActualizarMedico  
+    @DNI = 87654321,  
+    @Nombre = 'Ana María',  
+    @Apellido = 'Gómez',  
+    @Especialidad = 'Neurología',  
+    @Telefono = '1199776655',  
+    @Email = 'ana.maria@email.com';
+
+
+5)Consultas
+
+Obtener todos los turnos de un paciente en un rango de fechas
+
+CREATE PROCEDURE ObtenerTurnosPaciente  
+    @Paciente_ID INT,  
+    @FechaInicio DATE,  
+    @FechaFin DATE  
+AS  
+BEGIN  
+    SELECT * FROM Turno  
+    WHERE Paciente_ID = @Paciente_ID  
+    AND Fecha BETWEEN @FechaInicio AND @FechaFin  
+    ORDER BY Fecha, Hora;  
+END;
+
+Ejemplo:
+EXEC ObtenerTurnosPaciente  
+    @Paciente_ID = 12345678,  
+    @FechaInicio = '2024-03-01',  
+    @FechaFin = '2024-03-31';
+
+
+Calcular el total de pagos realizados por un paciente
+
+CREATE PROCEDURE CalcularTotalPagosPaciente  
+    @Paciente_ID INT  
+AS  
+BEGIN  
+    SELECT SUM(Monto) AS TotalPagado  
+    FROM Pagos  
+    WHERE Paciente_ID = @Paciente_ID;  
+END;
+
+Ejemplo:
+EXEC CalcularTotalPagosPaciente @Paciente_ID = 12345678;
+
+
+Obtener la especialidad de un médico específico
+
+CREATE PROCEDURE ObtenerEspecialidadMedico  
+    @Medico_ID INT  
+AS  
+BEGIN  
+    SELECT Especialidad  
+    FROM Medico  
+    WHERE DNI = @Medico_ID;  
+END;
+
+Ejemplo:
+EXEC ObtenerEspecialidadMedico @Medico_ID = 87654321;
+
+Listar los pacientes que aún no han pagado sus turnos
+
+CREATE PROCEDURE ListarPacientesSinPago  
+AS  
+BEGIN  
+    SELECT DISTINCT p.DNI, p.Nombre, p.Apellido  
+    FROM Paciente p  
+    INNER JOIN Turno t ON p.DNI = t.Paciente_ID  
+    LEFT JOIN Pagos pg ON t.ID_Turno = pg.Turno_ID  
+    WHERE pg.Turno_ID IS NULL;  
+END;
+
+Ejemplo:
+EXEC ListarPacientesSinPago;
+
+
+6) Validaciones y Restricciones:
+modificamos los procedimientos para agregarle validaciones y restricciones
+
+Evitar duplicar pacientes:
+
+ALTER PROCEDURE InsertarPaciente  
+    @DNI INT,  
+    @Nombre VARCHAR(50),  
+    @Apellido VARCHAR(50),  
+    @Direccion VARCHAR(100),  
+    @FechaNacimiento DATE,  
+    @Telefono VARCHAR(20),  
+    @Email VARCHAR(50)  
+AS  
+BEGIN  
+    -- Verificar si el paciente ya existe  
+    IF EXISTS (SELECT 1 FROM Paciente WHERE DNI = @DNI)  
+    BEGIN  
+        RAISERROR ('El paciente ya está registrado.', 16, 1);  
+        RETURN;  
+    END  
+
+    INSERT INTO Paciente (DNI, Nombre, Apellido, Direccion, FechaNacimiento, Telefono, Email)  
+    VALUES (@DNI, @Nombre, @Apellido, @Direccion, @FechaNacimiento, @Telefono, @Email);  
+END;
+
+
+Evitar turnos duplicados para el mismo médico y paciente en la misma fecha y hora:
+
+ALTER PROCEDURE InsertarTurno  
+    @Paciente_ID INT,  
+    @Medico_ID INT,  
+    @Fecha DATE,  
+    @Hora TIME,  
+    @Estado VARCHAR(20),  
+    @Motivo VARCHAR(100)  
+AS  
+BEGIN  
+    -- Verificar si el paciente y médico existen  
+    IF NOT EXISTS (SELECT 1 FROM Paciente WHERE DNI = @Paciente_ID)  
+    BEGIN  
+        RAISERROR ('El paciente no existe.', 16, 1);  
+        RETURN;  
+    END  
+
+    IF NOT EXISTS (SELECT 1 FROM Medico WHERE DNI = @Medico_ID)  
+    BEGIN  
+        RAISERROR ('El médico no existe.', 16, 1);  
+        RETURN;  
+    END  
+
+    -- Verificar si ya existe un turno para el mismo médico y paciente en la misma fecha y hora  
+    IF EXISTS (SELECT 1 FROM Turno WHERE Paciente_ID = @Paciente_ID AND Medico_ID = @Medico_ID AND Fecha = @Fecha AND Hora = @Hora)  
+    BEGIN  
+        RAISERROR ('Ya existe un turno para este paciente con este médico en la misma fecha y hora.', 16, 1);  
+        RETURN;  
+    END  
+
+    INSERT INTO Turno (Paciente_ID, Medico_ID, Fecha, Hora, Estado, Motivo)  
+    VALUES (@Paciente_ID, @Medico_ID, @Fecha, @Hora, @Estado, @Motivo);  
+END;
+
+
+Validar pagos antes de registrarlos:
+
+ALTER PROCEDURE RegistrarPago    
+    @Paciente_ID INT,  
+    @Turno_ID INT,  
+    @Fecha DATE,  
+    @Monto DECIMAL(10,2)  
+AS  
+BEGIN  
+    -- Verificar si el paciente y el turno existen  
+    IF NOT EXISTS (SELECT 1 FROM Paciente WHERE DNI = @Paciente_ID)  
+    BEGIN  
+        RAISERROR ('El paciente no existe.', 16, 1);  
+        RETURN;  
+    END  
+
+    IF NOT EXISTS (SELECT 1 FROM Turno WHERE ID_Turno = @Turno_ID AND Paciente_ID = @Paciente_ID)  
+    BEGIN  
+        RAISERROR ('El turno no existe o no pertenece al paciente.', 16, 1);  
+        RETURN;  
+    END  
+
+    -- Verificar si el pago ya fue realizado  
+    IF EXISTS (SELECT 1 FROM Pagos WHERE Turno_ID = @Turno_ID)  
+    BEGIN  
+        RAISERROR ('El turno ya ha sido pagado.', 16, 1);  
+        RETURN;  
+    END  
+
+    INSERT INTO Pagos (Paciente_ID, Turno_ID, Fecha, Monto)  
+    VALUES (@Paciente_ID, @Turno_ID, @Fecha, @Monto);  
+END;
+
+
+Evitar que un médico cambie a una especialidad inexistente:
+
+ALTER PROCEDURE ActualizarMedico  
+    @DNI INT,  
+    @Nombre VARCHAR(50),  
+    @Apellido VARCHAR(50),  
+    @Especialidad VARCHAR(50),  
+    @Telefono VARCHAR(20),  
+    @Email VARCHAR(50)  
+AS  
+BEGIN  
+    -- Verificar si el médico existe  
+    IF NOT EXISTS (SELECT 1 FROM Medico WHERE DNI = @DNI)  
+    BEGIN  
+        RAISERROR ('El médico no existe.', 16, 1);  
+        RETURN;  
+    END  
+
+    -- Verificar si la especialidad existe en la tabla de especialidades  
+    IF NOT EXISTS (SELECT 1 FROM Especialidades WHERE Nombre = @Especialidad)  
+    BEGIN  
+        RAISERROR ('La especialidad no es válida.', 16, 1);  
+        RETURN;  
+    END  
+
+    UPDATE Medico  
+    SET Nombre = @Nombre,  
+        Apellido = @Apellido,  
+        Especialidad = @Especialidad,  
+        Telefono = @Telefono,  
+        Email = @Email  
+    WHERE DNI = @DNI;  
+END;
+
+
+7)Optimizacion:
+
+-- Índice en la tabla Turno para búsquedas rápidas por Paciente_ID y Fecha
+CREATE INDEX idx_turno_paciente_fecha ON Turno (Paciente_ID, Fecha);
+
+-- Índice en la tabla HistoriaClinica para consultas por paciente
+CREATE INDEX idx_historial_paciente ON HistoriaClinica (Paciente_ID);
